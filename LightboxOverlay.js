@@ -18,11 +18,12 @@ var {
   Text,
   TouchableOpacity,
   View,
+  BackAndroid,
 } = require('react-native');
 
 var WINDOW_HEIGHT = Dimensions.get('window').height;
 var WINDOW_WIDTH = Dimensions.get('window').width;
-var DRAG_DISMISS_THRESHOLD = 150;
+var DRAG_DISMISS_THRESHOLD = 50;
 var STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 
 var LightboxOverlay = React.createClass({
@@ -111,8 +112,19 @@ var LightboxOverlay = React.createClass({
     }
   },
 
+  onAndroidBack: function() {
+       if(this.props.isOpen) {
+         BackAndroid.removeEventListener('hardwareBackPress', this.onAndroidBack);
+         this.close();
+         return true;
+       }
+       return false;
+   },
+
   open: function() {
     StatusBar.setHidden(true, 'fade');
+    BackAndroid.addEventListener('hardwareBackPress', this.onAndroidBack);
+     
     this.state.pan.setValue(0);
     this.setState({
       isAnimating: true,
@@ -217,7 +229,7 @@ var LightboxOverlay = React.createClass({
       );
     }
     return (
-      <Modal visible={isOpen} onRequestClose={()=>{}} transparent={true}>
+      <Modal visible={isOpen} onRequestClose={() => null} transparent={true}>
         {background}
         {content}
         {header}
