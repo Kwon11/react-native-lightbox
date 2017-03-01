@@ -135,6 +135,22 @@ var Lightbox = React.createClass({
     }
   },
 
+  componentDidUpdate: function() {
+    if (this._root) {
+      this._root.measure((ox, oy, width, height, px, py) => {
+        if (this.state.origin.x !== px || this.state.origin.y !== py)
+        this.setState({
+          origin: {
+            width,
+            height,
+            x: px,
+            y: py,
+          },
+        });
+      });
+    }
+  },
+
   render: function() {
     // measure will not return anything useful if we dont attach a onLayout handler on android
     return (

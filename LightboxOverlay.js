@@ -21,8 +21,6 @@ var {
   BackAndroid,
 } = require('react-native');
 
-var WINDOW_HEIGHT = Dimensions.get('window').height;
-var WINDOW_WIDTH = Dimensions.get('window').width;
 var DRAG_DISMISS_THRESHOLD = 50;
 var STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 
@@ -69,6 +67,8 @@ var LightboxOverlay = React.createClass({
   },
 
   componentWillMount: function() {
+    var windowHeight = Dimensions.get('window').height;
+
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
       onStartShouldSetPanResponder: (evt, gestureState) => !this.state.isAnimating,
@@ -92,7 +92,7 @@ var LightboxOverlay = React.createClass({
             target: {
               y: gestureState.dy,
               x: gestureState.dx,
-              opacity: 1 - Math.abs(gestureState.dy / WINDOW_HEIGHT)
+              opacity: 1 - Math.abs(gestureState.dy / windowHeight)
             }
           });
           this.close();
@@ -124,7 +124,7 @@ var LightboxOverlay = React.createClass({
   open: function() {
     StatusBar.setHidden(true, 'fade');
     BackAndroid.addEventListener('hardwareBackPress', this.onAndroidBack);
-     
+
     this.state.pan.setValue(0);
     this.setState({
       isAnimating: true,
@@ -165,6 +165,9 @@ var LightboxOverlay = React.createClass({
   },
 
   render: function() {
+    var windowHeight = Dimensions.get('window').height;
+    var windowWidth = Dimensions.get('window').width;
+
     var {
       isOpen,
       renderHeader,
@@ -195,14 +198,14 @@ var LightboxOverlay = React.createClass({
       dragStyle = {
         top: this.state.pan,
       };
-      lightboxOpacityStyle.opacity = this.state.pan.interpolate({inputRange: [-WINDOW_HEIGHT, 0, WINDOW_HEIGHT], outputRange: [0, 1, 0]});
+      lightboxOpacityStyle.opacity = this.state.pan.interpolate({inputRange: [-windowHeight, 0, windowHeight], outputRange: [0, 1, 0]});
     }
 
     var openStyle = [styles.open, {
       left:   openVal.interpolate({inputRange: [0, 1], outputRange: [origin.x, target.x]}),
       top:    openVal.interpolate({inputRange: [0, 1], outputRange: [origin.y + STATUS_BAR_OFFSET, target.y + STATUS_BAR_OFFSET]}),
-      width:  openVal.interpolate({inputRange: [0, 1], outputRange: [origin.width, WINDOW_WIDTH]}),
-      height: openVal.interpolate({inputRange: [0, 1], outputRange: [origin.height, WINDOW_HEIGHT]}),
+      width:  openVal.interpolate({inputRange: [0, 1], outputRange: [origin.width, windowWidth]}),
+      height: openVal.interpolate({inputRange: [0, 1], outputRange: [origin.height, windowHeight]}),
     }];
 
     var background = (<Animated.View style={[styles.background, { backgroundColor: backgroundColor }, lightboxOpacityStyle]}></Animated.View>);
@@ -242,9 +245,9 @@ var styles = StyleSheet.create({
   background: {
     position: 'absolute',
     top: 0,
+    bottom: 0,
     left: 0,
-    width: WINDOW_WIDTH,
-    height: WINDOW_HEIGHT,
+    right: 0,
   },
   open: {
     position: 'absolute',
@@ -257,7 +260,7 @@ var styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    width: WINDOW_WIDTH,
+    right: 0,
     backgroundColor: 'transparent',
   },
   closeButton: {
