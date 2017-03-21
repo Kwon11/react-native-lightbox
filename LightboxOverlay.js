@@ -18,6 +18,7 @@ var {
   Text,
   TouchableOpacity,
   View,
+  Image,
   BackAndroid,
 } = require('react-native');
 
@@ -208,13 +209,28 @@ var LightboxOverlay = React.createClass({
       height: openVal.interpolate({inputRange: [0, 1], outputRange: [origin.height, windowHeight]}),
     }];
 
+    const closeButton = (
+      <TouchableOpacity onPress={this.close}>
+        <Text style={styles.closeButton}>×</Text>
+      </TouchableOpacity>
+    );
+
+    const closeAndConfirmButtons = (
+      <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
+        {closeButton}
+        <TouchableOpacity onPress={() => { this.props.onConfirm(); this.close(); }}>
+          <Image style={styles.confirmButton} source={this.props.confirmIcon}/>
+        </TouchableOpacity>
+      </View>
+    );
+
+    const defaultHeader = this.props.onConfirm ? closeAndConfirmButtons : closeButton;
+
     var background = (<Animated.View style={[styles.background, { backgroundColor: backgroundColor }, lightboxOpacityStyle]}></Animated.View>);
     var header = (<Animated.View style={[styles.header, lightboxOpacityStyle]}>{(renderHeader ?
       renderHeader(this.close) :
       (
-        <TouchableOpacity onPress={this.close}>
-          <Text style={styles.closeButton}>×</Text>
-        </TouchableOpacity>
+        defaultHeader
       )
     )}</Animated.View>);
     var content = (
@@ -277,6 +293,10 @@ var styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.8,
   },
+  confirmButton: {
+    marginRight: 10,
+    marginTop: 5,
+  }
 });
 
 module.exports = LightboxOverlay;

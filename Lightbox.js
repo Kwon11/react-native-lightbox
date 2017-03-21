@@ -79,6 +79,8 @@ var Lightbox = React.createClass({
       swipeToDismiss: this.props.swipeToDismiss,
       springConfig: this.props.springConfig,
       backgroundColor: this.props.backgroundColor,
+      onConfirm: this.props.onConfirm,
+      confirmIcon: this.props.confirmIcon,
       children: this.getContent(),
       onClose: this.onClose,
       onHitClose: this.props.onHitClose,

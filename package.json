@@ -1,6 +1,6 @@
 {
   "name": "react-native-lightbox",
-  "version": "0.6.0-3",
+  "version": "0.6.0-4",
   "description": "Images etc in Full Screen Lightbox Popovers for React Native",
   "main": "Lightbox.js",
   "scripts": {
