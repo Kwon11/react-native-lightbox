@@ -4,6 +4,7 @@
  */
 'use strict';
 
+var createReactClass = require('create-react-class');
 var React = require('react');
 var {
   AppRegistry,
@@ -23,7 +24,7 @@ var Carousel = require('react-native-looped-carousel');
 var WINDOW_WIDTH = Dimensions.get('window').width;
 var BASE_PADDING = 10;
 
-var LightboxView = React.createClass({
+var LightboxView = createReactClass({
   renderCarousel: function() {
     return (
       <Carousel style={{ width: WINDOW_WIDTH, height: WINDOW_WIDTH }}>
@@ -86,7 +87,7 @@ var LightboxView = React.createClass({
 });
 
 
-var Example = React.createClass({
+var Example = createReactClass({
   renderScene: function(route, navigator) {
     var Component = route.component;
 

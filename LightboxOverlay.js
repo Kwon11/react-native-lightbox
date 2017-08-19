@@ -3,6 +3,7 @@
  */
 'use strict';
 
+var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 var React = require('react');
 var {
@@ -23,7 +24,7 @@ var {
 var DRAG_DISMISS_THRESHOLD = 50;
 var STATUS_BAR_OFFSET = (Platform.OS === 'android' ? -25 : 0);
 
-var LightboxOverlay = React.createClass({
+var LightboxOverlay = createReactClass({
   propTypes: {
     origin: PropTypes.shape({
       x:        PropTypes.number,
