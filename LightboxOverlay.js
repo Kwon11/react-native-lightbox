@@ -130,6 +130,9 @@ var LightboxOverlay = React.createClass({
   },
 
   close: function() {
+    if (this.props.beforeClose) {
+      this.props.beforeClose();
+    }
     this.props.onHitClose();
     StatusBar.setHidden(false, 'fade');
     this.setState({

@@ -82,6 +82,7 @@ var Lightbox = React.createClass({
       children: this.getContent(),
       onClose: this.onClose,
       onHitClose: this.props.onHitClose,
+      beforeClose: this.props.beforeClose,
     };
   },
 
